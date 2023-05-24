@@ -1,0 +1,103 @@
+service: cc
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  # profile: LocalStack
+  runtime: python3.9
+  region: us-east-1
+
+  # s3:
+  #   bucketHost:
+  #     name: ctl-dbucket
+
+  # deploymentBucket:
+  #   name: cdb
+  #   serverSideEncryption: AES256
+
+functions:
+  hello:
+    handler: handler.hello
+    # layers:
+    #   - Ref: PythonRequirementsLambdaLayer
+    events:
+      - http:
+          path: v1/keys/debug
+          method: get
+          request:
+            parameters:
+              paths:
+                id: true
+      
+  hi:
+    handler: handler.credentials
+    # layers:
+    #   - Ref: PythonRequirementsLambdaLayer
+    events:
+      - http:
+          path: v1/keys/credentials
+          method: get
+
+  MigrateDB:
+    handler: handler.migration
+    # layers:
+    #   - Ref: PythonRequirementsLambdaLayer
+    events:
+      - http:
+          path: v1/keys/migration
+          method: get
+  
+  CreateKey:
+    handler: handler.create_key
+    # layers:
+    #   - Ref: PythonRequirementsLambdaLayer
+    events:
+      - http:
+          path: v1/keys/create
+          method: post
+  
+  GetKey:
+    handler: handler.get_key
+    # layers:
+    #   - Ref: PythonRequirementsLambdaLayer
+    events:
+      - http:
+          path: v1/keys/{id}
+          method: get
+          request:
+            parameters:
+              paths:
+                id: true
+  
+  ValidateKey:
+    handler: handler.validate_key
+    # layers:
+    #   - Ref: PythonRequirementsLambdaLayer
+    events:
+      - http:
+          path: v1/keys/validate/{value}
+          method: get
+          request:
+            parameters:
+              paths:
+                value: true
+
+plugins:
+  - serverless-localstack
+  - serverless-python-requirements
+custom:
+  localstack:
+    stages:
+      - local
+    host: http://localhost  # optional - LocalStack host to connect to
+    # autostart: true  # optional - start LocalStack in Docker on Serverless deploy
+    endpointFile: local_endpoints.json
+    # lambda:
+    #   # Enable this flag to improve performance
+    #   mountCode: True
+    # docker:
+    #   # Enable this flag to run "docker ..." commands as sudo
+    #   sudo: True
+  pythonRequirements:
+    zip: true
+  #   layer: true
