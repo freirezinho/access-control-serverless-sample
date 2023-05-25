@@ -3,63 +3,30 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  # profile: LocalStack
   runtime: python3.9
   region: us-east-1
 
-  # s3:
-  #   bucketHost:
-  #     name: ctl-dbucket
-
-  # deploymentBucket:
-  #   name: cdb
-  #   serverSideEncryption: AES256
-
 functions:
-  hello:
-    handler: handler.hello
-    # layers:
-    #   - Ref: PythonRequirementsLambdaLayer
-    events:
-      - http:
-          path: v1/keys/debug
-          method: get
-          request:
-            parameters:
-              paths:
-                id: true
-      
-  hi:
-    handler: handler.credentials
-    # layers:
-    #   - Ref: PythonRequirementsLambdaLayer
-    events:
-      - http:
-          path: v1/keys/credentials
-          method: get
 
+  ## Setup do DB
   MigrateDB:
     handler: handler.migration
-    # layers:
-    #   - Ref: PythonRequirementsLambdaLayer
     events:
       - http:
           path: v1/keys/migration
           method: get
+
+  ## Funções relativas ao microserviço de chaves (tags)
   
   CreateKey:
     handler: handler.create_key
-    # layers:
-    #   - Ref: PythonRequirementsLambdaLayer
     events:
       - http:
-          path: v1/keys/create
+          path: v1/keys
           method: post
   
   GetKey:
     handler: handler.get_key
-    # layers:
-    #   - Ref: PythonRequirementsLambdaLayer
     events:
       - http:
           path: v1/keys/{id}
@@ -71,8 +38,6 @@ functions:
   
   ValidateKey:
     handler: handler.validate_key
-    # layers:
-    #   - Ref: PythonRequirementsLambdaLayer
     events:
       - http:
           path: v1/keys/validate/{value}
@@ -81,6 +46,33 @@ functions:
             parameters:
               paths:
                 value: true
+  
+  CancelKey:
+    handler: handler.cancel_key
+    events:
+      - http:
+          path: v1/keys/{id}
+          method: delete
+          request:
+            parameters:
+              paths:
+                id: true
+
+  ## Funções relativas aos serviço de logs
+
+  CreateLog:
+    handler: handler.log_access
+    events:
+      - http:
+          path: v1/logs
+          method: post
+  
+  GetLogs:
+    handler: handler.get_logs
+    events:
+      - http:
+          path: v1/logs
+          method: get
 
 plugins:
   - serverless-localstack
