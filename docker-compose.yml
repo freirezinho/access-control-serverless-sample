@@ -24,9 +24,9 @@ services:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - "127.0.0.1:4566:4566" # LocalStack Gateway
-      - "127.0.0.1:4510-4559:4510-4559" # external services port range
-      - "127.0.0.1:4572:4572" #S3
+      - "4566:4566" # LocalStack Gateway
+      - "4510-4559:4510-4559" # external services port range
+      - "4572:4572" #S3
       # - "53:53"
       # - "53:53/udp"
       # - "443:443"
