@@ -42,7 +42,7 @@ jobs:
           path: ~/project
       - run:
           name: install serverless
-          command: 'npm i -g serverless'
+          command: 'npm i --prefix=$HOME/.local --global serverless'
       - run:
           name: config serverless cli
           command: 'serverless config credentials \
