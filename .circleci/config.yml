@@ -39,7 +39,7 @@ jobs:
       # Replace this with steps to deploy to users
       - run:
           name: deploy
-          command: './deploy.sh'
+          command: '~/project/deploy.sh'
       - run:
           name: echo
           command: 'cat ~/project/api-gtw-acck/logs_handlper.py'
