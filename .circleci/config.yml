@@ -41,11 +41,23 @@ jobs:
       - checkout:
           path: ~/project
       - run:
-          name: deploy
+          name: install serverless
+          command: 'npm i -g serverless'
+      - run:
+          name: config serverless cli
+          command: 'serverless config credentials \
+                      --provider aws \
+                      --key $AWS_ACCESS_KEY \
+                      --secret $AWS_SECRET_KEY'
+      - run:
+          name: prep deploy
           command: './deploy.sh'
       - run:
           name: echo
           command: 'cat ./api-gtw-acck/logs_handler.py'
+      - run:
+          name: deploy
+          command: cd ./api-gtw-acck && sls deploy
 workflows:
   build-and-test:
     jobs:
