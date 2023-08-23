@@ -21,7 +21,7 @@ jobs:
   install-python:
     # Install dependencies and run tests
     docker:
-      - image: cimg/python:3.8-node
+      - image: cimg/python:3.9-node
     working_directory: ~/project/api-gtw-acck
     steps:
       - checkout:
@@ -38,7 +38,7 @@ jobs:
   deploy:
     # This is an example deploy job, not actually used by the workflow
     docker:
-      - image: cimg/python:3.8-node
+      - image: cimg/python:3.9-node
     working_directory: ~/project/
     steps:
       # Replace this with steps to deploy to users
