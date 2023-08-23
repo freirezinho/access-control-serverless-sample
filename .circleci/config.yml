@@ -45,7 +45,7 @@ jobs:
       - checkout:
           path: ~/project
       - restore_cache:
-          key: v1-deps-{{ checksum "package-lock.json" }}
+          key: v1-deps-{{ checksum "./api-gtw-acck/package-lock.json" }}
       - run:
           name: install serverless
           command: 'npm i --prefix=$HOME/.local --global serverless'
