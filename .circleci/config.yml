@@ -48,6 +48,7 @@ workflows:
     jobs:
       - install-node
       - install-python
+      - deploy
     # - deploy:
     #     requires:
     #       - test-node
