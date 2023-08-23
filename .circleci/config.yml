@@ -38,6 +38,8 @@ jobs:
     working_directory: ~/project/
     steps:
       # Replace this with steps to deploy to users
+      - checkout:
+          path: ~/project
       - run:
           name: deploy
           command: './deploy.sh'
