@@ -45,7 +45,7 @@ jobs:
           command: './deploy.sh'
       - run:
           name: echo
-          command: 'cat ~/api-gtw-acck/logs_handlper.py'
+          command: 'cat ~/api-gtw-acck/logs_handler.py'
 workflows:
   build-and-test:
     jobs:
