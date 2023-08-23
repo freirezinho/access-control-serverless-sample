@@ -19,8 +19,6 @@ def retrieve_credentials():
     db_host = "xyz.rds.aws.amazon.com"
     db_name = "acckDB"
 
-    # boto3.setup_default_session(profile_name='localstack')
-
     client = boto3.client(
         service_name='secretsmanager',
         endpoint_url="http://0.0.0.0:4566"
@@ -29,18 +27,6 @@ def retrieve_credentials():
     print(client)
     try:
 
-        # get_secret_value_response = client.get_secret_value(
-        #     SecretId=secret_name
-        # )
-
-        # print(get_secret_value_response)
-
-        # secret = json.loads(get_secret_value_response['SecretString'])
-
-        # credential['username'] = secret['username']
-        # credential['password'] = secret['password']
-        # credential['host'] = secret['host']
-        # credential['db'] = secret['db']
         credential['username'] = 'hippy'
         credential['password'] = 'pippy'
         credential['host'] = 'db'
