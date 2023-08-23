@@ -5,7 +5,6 @@ except ImportError:
 
 from datetime import date, datetime
 import json
-import boto3
 import psycopg2
 import ulid
 import uuid
@@ -13,27 +12,10 @@ import uuid
 
 def retrieve_credentials():
     credential = {}
-
-    secret_name = "DBParams"
-    region_name = "us-east-1"
-    db_host = "xyz.rds.aws.amazon.com"
-    db_name = "acckDB"
-
-    client = boto3.client(
-        service_name='secretsmanager',
-        endpoint_url="http://0.0.0.0:4566"
-    )
-
-    print(client)
-    try:
-
-        credential['username'] = 'hippy'
-        credential['password'] = 'pippy'
-        credential['host'] = 'db'
-        credential['db'] = 'yippy'
-
-    except Exception as e:
-        credential['error'] = e.args
+    credential['username'] = 'hippy'
+    credential['password'] = 'pippy'
+    credential['host'] = 'db'
+    credential['db'] = 'yippy'
 
     return credential
 
@@ -122,57 +104,6 @@ def log(event, cursor):
                    )
                    )
     return
-
-
-def log_access(event, context):
-    body = json.loads(event['body'])
-    if 'event' not in body:
-        return {
-            'statusCode': 400,
-            'body': 'Bad Request'
-        }
-    try:
-        db_config = retrieve_credentials()
-        connection = connect_with(credentials=db_config)
-        cursor = connection.cursor()
-        log(event=body['event'], cursor=cursor)
-        cursor.close()
-        connection.commit()
-        return {
-            'statusCode': 201,
-            'body': ''
-        }
-    except Exception as e:
-        return {
-            "statusCode": 500,
-            "body": {"error": f"Houve um problema na conexão com o banco: {e.args}"}
-        }
-
-
-def get_logs(event, context):
-    try:
-        db_config = retrieve_credentials()
-        connection = connect_with(credentials=db_config)
-        cursor = connection.cursor()
-        query = "SELECT * FROM accesslogs ORDER BY id::text DESC LIMIT 5;"
-        cursor.execute(query)
-        result = cursor.fetchall()
-        cursor.close()
-        connection.commit()
-        if result == None or len(result) == 0:
-            return {
-                'statusCode': 404,
-                'body': ''
-            }
-        return {
-            'statusCode': 200,
-            'body': json.dumps(result, default=json_date_serial)
-        }
-    except Exception as e:
-        return {
-            "statusCode": 404,
-            "body": {"error": f"Houve um problema na conexão com o banco: {e.args}"}
-        }
 
 
 def validate_key(event, context):

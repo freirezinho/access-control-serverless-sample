@@ -61,14 +61,14 @@ functions:
   ## Funções relativas aos serviço de logs
 
   CreateLog:
-    handler: handler.log_access
+    handler: logs_handler.log_access
     events:
       - http:
           path: v1/logs
           method: post
   
   GetLogs:
-    handler: handler.get_logs
+    handler: logs_handler.get_logs
     events:
       - http:
           path: v1/logs
