@@ -14,6 +14,10 @@ jobs:
           path: ~/project
       - node/install-packages:
           pkg-manager: npm
+      - save_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
+          paths: 
+            - node_modules
   install-python:
     # Install dependencies and run tests
     docker:
@@ -40,6 +44,8 @@ jobs:
       # Replace this with steps to deploy to users
       - checkout:
           path: ~/project
+      - restore_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
       - run:
           name: install serverless
           command: 'npm i --prefix=$HOME/.local --global serverless'
