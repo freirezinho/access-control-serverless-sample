@@ -14,10 +14,14 @@ jobs:
           path: ~/project
       - node/install-packages:
           pkg-manager: npm
+      - save_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
+          paths: 
+            - node_modules
   install-python:
     # Install dependencies and run tests
     docker:
-      - image: cimg/python:3.8-node
+      - image: cimg/python:3.9-node
     working_directory: ~/project/api-gtw-acck
     steps:
       - checkout:
@@ -34,20 +38,35 @@ jobs:
   deploy:
     # This is an example deploy job, not actually used by the workflow
     docker:
-      - image: cimg/python:3.8-node
+      - image: cimg/python:3.9-node
+    working_directory: ~/project/
     steps:
       # Replace this with steps to deploy to users
+      - checkout:
+          path: ~/project
+      - restore_cache:
+          key: v1-deps-{{ checksum "./api-gtw-acck/package-lock.json" }}
       - run:
-          name: deploy
+          name: install serverless
+          command: 'npm i --prefix=$HOME/.local --global serverless'
+      - run:
+          name: config serverless cli
+          command: './api-gtw-acck/node_modules/.bin/serverless config credentials --provider aws --key $AWS_ACCESS_KEY --secret $AWS_SECRET_KEY'
+      - run:
+          name: prep deploy
           command: './deploy.sh'
       - run:
           name: echo
-          command: 'cat ~/project/api-gtw-acck/logs_handlper.py'
+          command: 'cat ./api-gtw-acck/logs_handler.py'
+      - run:
+          name: deploy
+          command: cd ./api-gtw-acck && sls deploy
 workflows:
   build-and-test:
     jobs:
       - install-node
       - install-python
+      - deploy
     # - deploy:
     #     requires:
     #       - test-node
