@@ -77,11 +77,11 @@ def get_logs(event, context):
             }
         return {
             'statusCode': 200,
-            'body': json.dumps(result, default=json_date_serial)
+            'body': { "result": json.dumps(result, default=json_date_serial) }
         }
     except Exception as e:
         return {
-            "statusCode": 404,
+            "statusCode": 500,
             "body": {"error": f"Houve um problema na conexão com o banco: {e.args}"}
         }
 
