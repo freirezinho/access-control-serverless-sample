@@ -75,9 +75,17 @@ def get_logs(event, context):
                 'statusCode': 404,
                 'body': ''
             }
+        result_list = []
+        for obj in result:
+            result_list.append({
+                'id': obj[0],
+                'message': obj[1],
+                'created_at': obj[2].isoformat(),
+                'updated_at': obj[3].isoformat()
+            })
         return {
             'statusCode': 200,
-            'body': { "result": json.dumps(result, default=json_date_serial) }
+            'body': { "result": result_list }
         }
     except Exception as e:
         return {
