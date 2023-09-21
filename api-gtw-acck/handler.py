@@ -271,10 +271,10 @@ def create_key(event, context):
             'headers': {
                 'Access-Control-Allow-Origin': '*'
             },
-            "body": {
+            "body": json.dumps({
                 "id": new_key_id,
                 "value": new_key_value
-            }
+            })
         }
     except Exception as e:
         return {
