@@ -40,6 +40,9 @@ def log_access(event, context):
     if 'event' not in body:
         return {
             'statusCode': 400,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             'body': 'Bad Request'
         }
     try:
@@ -51,11 +54,17 @@ def log_access(event, context):
         connection.commit()
         return {
             'statusCode': 201,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             'body': ''
         }
     except Exception as e:
         return {
             "statusCode": 500,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             "body": {"error": f"Houve um problema na conexão com o banco: {e.args}"}
         }
 
@@ -73,6 +82,9 @@ def get_logs(event, context):
         if result == None or len(result) == 0:
             return {
                 'statusCode': 404,
+                'headers': {
+                    'Access-Control-Allow-Origin': '*'
+                },
                 'body': ''
             }
         result_list = []
@@ -85,11 +97,17 @@ def get_logs(event, context):
             })
         return {
             'statusCode': 200,
-            'body': { "result": result_list }
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
+            'body': json.dumps({ "result": result_list })
         }
     except Exception as e:
         return {
             "statusCode": 500,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             "body": {"error": f"Houve um problema na conexão com o banco: {e.args}"}
         }
 

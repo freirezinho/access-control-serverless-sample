@@ -62,11 +62,17 @@ def migration(event, context):
         connection.commit()
         return {
             "statusCode": 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             "body": ""
         }
     except Exception as e:
         return {
             "statusCode": 500,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             "body": f"Migration not successful: {e.args}"
         }
 
@@ -111,6 +117,9 @@ def validate_key(event, context):
     if 'value' not in params:
         return {
             'statusCode': 400,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             'body': 'Bad Request'
         }
     try:
@@ -129,6 +138,9 @@ def validate_key(event, context):
             )
             return {
                 "statusCode": 200,
+                'headers': {
+                    'Access-Control-Allow-Origin': '*'
+                },
                 "body": ""
             }
         else:
@@ -138,11 +150,17 @@ def validate_key(event, context):
             )
             return {
                 "statusCode": 404,
+                'headers': {
+                    'Access-Control-Allow-Origin': '*'
+                },
                 "body": ""
             }
     except Exception as e:
         return {
             "statusCode": 500,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             "body": {"error": f"Houve um problema na conexão com o banco: {e.args}"}
         }
     finally:
@@ -163,6 +181,9 @@ def get_key(event, context):
     if 'id' not in params:
         return {
             'statusCode': 400,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             'body': 'Bad Request'
         }
     try:
@@ -192,11 +213,17 @@ def get_key(event, context):
         else:
             return {
                 'statusCode': 404,
+                'headers': {
+                    'Access-Control-Allow-Origin': '*'
+                },
                 'body': ''
             }
     except Exception as e:
         return {
             "statusCode": 404,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             "body": {"error": f"Houve um problema na conexão com o banco: {e.args}"}
         }
 
@@ -206,6 +233,9 @@ def create_key(event, context):
     if 'user_id' not in body:
         return {
             'statusCode': 400,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             'body': 'Bad Request'
         }
     try:
@@ -238,6 +268,9 @@ def create_key(event, context):
         connection.commit()
         return {
             "statusCode": 201,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             "body": {
                 "id": new_key_id,
                 "value": new_key_value
@@ -246,6 +279,9 @@ def create_key(event, context):
     except Exception as e:
         return {
             "statusCode": 503,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             "body": {"error": f"Houve um problema na conexão com o banco: {e.args}"}
         }
 
@@ -255,6 +291,9 @@ def cancel_key(event, context):
     if 'id' not in params:
         return {
             'statusCode': 400,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             'body': 'Bad Request'
         }
     try:
@@ -277,6 +316,9 @@ def cancel_key(event, context):
             )
             return {
                 'statusCode': 406,
+                'headers': {
+                    'Access-Control-Allow-Origin': '*'
+                },
                 'body': 'Not Acceptable'
             }
 
@@ -287,12 +329,18 @@ def cancel_key(event, context):
 
         return {
             'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             'body': ''
         }
 
     except Exception as e:
         return {
             "statusCode": 500,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
             "body": {"error": f"Houve um problema na conexão com o banco: {e.args}"}
         }
     finally:

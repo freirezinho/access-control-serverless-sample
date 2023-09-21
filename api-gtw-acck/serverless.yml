@@ -15,6 +15,7 @@ functions:
       - http:
           path: v1/keys/migration
           method: get
+          cors: true
 
   ## Funções relativas ao microserviço de chaves (tags)
   
@@ -24,10 +25,7 @@ functions:
       - http:
           path: v1/keys
           method: post
-          cors: 
-            origins:
-            - 'http://freirezinho.github.io/keyz-panel/'
-            - 'http://localhost/'
+          cors: true
   
   GetKey:
     handler: handler.get_key
@@ -35,10 +33,7 @@ functions:
       - http:
           path: v1/keys/{id}
           method: get
-          cors: 
-            origins:
-            - 'http://freirezinho.github.io/keyz-panel/'
-            - 'http://localhost/'
+          cors: true
           request:
             parameters:
               paths:
@@ -50,10 +45,7 @@ functions:
       - http:
           path: v1/keys/validate/{value}
           method: get
-          cors: 
-            origins:
-            - 'http://freirezinho.github.io/keyz-panel/'
-            - 'http://localhost/'
+          cors: true
           request:
             parameters:
               paths:
@@ -65,10 +57,7 @@ functions:
       - http:
           path: v1/keys/{id}
           method: delete
-          cors: 
-            origins:
-            - 'http://freirezinho.github.io/keyz-panel/'
-            - 'http://localhost/'
+          cors: true
           request:
             parameters:
               paths:
@@ -82,6 +71,7 @@ functions:
       - http:
           path: v1/logs
           method: post
+          cors: true
   
   GetLogs:
     handler: logs_handler.get_logs
@@ -89,10 +79,7 @@ functions:
       - http:
           path: v1/logs
           method: get
-          cors: 
-            origins:
-            - 'http://freirezinho.github.io/keyz-panel/'
-            - 'http://localhost/'
+          cors: true
 
 plugins:
   - serverless-localstack
