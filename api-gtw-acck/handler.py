@@ -199,6 +199,9 @@ def get_key(event, context):
             record = result[0]
             return {
                 "statusCode": 200,
+                'headers': {
+                    'Access-Control-Allow-Origin': '*'
+                },
                 "body": json.dumps(
                     {
                         'id': record[0],
